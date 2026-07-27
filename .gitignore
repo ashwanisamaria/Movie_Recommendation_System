@@ -11,9 +11,3 @@ __pycache__/
 
 # Streamlit
 .streamlit/secrets.toml
-
-# Large Dataset
-dataset/rating.csv
-
-# Generated Models
-models/
