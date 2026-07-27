@@ -209,3 +209,23 @@ If you found this project helpful, consider giving it a ⭐ on GitHub!
 ## 📄 License
 
 This project is intended for educational and learning purposes.
+
+---
+
+# 📸 Project Preview
+
+## 🏠 Home Page
+
+The homepage allows users to select a movie and generate AI-powered recommendations.
+
+![Home Page](assets/homepage.png)
+
+---
+
+## 🎬 Movie Recommendations
+
+The recommendation engine suggests similar movies using K-Nearest Neighbors (KNN) and Collaborative Filtering.
+
+![Movie Recommendations](assets/recommendation.png)
+
+---
