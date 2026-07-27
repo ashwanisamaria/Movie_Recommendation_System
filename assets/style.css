@@ -1,0 +1,105 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"]{
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+.stApp{
+    background:#0f1117;
+}
+
+/* Hide Streamlit Branding */
+#MainMenu{
+    visibility:hidden;
+}
+
+footer{
+    visibility:hidden;
+}
+
+header{
+    visibility:hidden;
+}
+
+/* Hero Title */
+.main-title{
+    text-align:center;
+    font-size:50px;
+    font-weight:700;
+    color:white;
+    margin-bottom:5px;
+}
+
+.main-title span{
+    color:#ff4b4b;
+}
+
+/* Subtitle */
+
+.subtitle{
+    text-align:center;
+    color:#bbbbbb;
+    font-size:20px;
+    margin-bottom:40px;
+}
+
+/* Section */
+
+.section-title{
+    font-size:32px;
+    font-weight:600;
+    color:white;
+    margin-top:20px;
+}
+
+/* Movie Card */
+
+.movie-card{
+
+    background:#1b1d26;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    transition:.3s;
+
+    box-shadow:0 0 15px rgba(0,0,0,.35);
+
+}
+
+.movie-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 10px 30px rgba(255,75,75,.35);
+
+}
+
+/* Button */
+
+.stButton>button{
+
+    background:#ff4b4b;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 30px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+}
+
+.stButton>button:hover{
+
+    background:#ff2d2d;
+
+}
