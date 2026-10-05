@@ -2,8 +2,8 @@ import pickle
 from pathlib import Path
 
 import pandas as pd
-from scipy.sparse import csr_matrix
-from sklearn.neighbors import NearestNeighbors
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,56 +12,46 @@ MODEL_DIR = BASE_DIR / "models"
 
 MODEL_DIR.mkdir(exist_ok=True)
 
-movies = pd.read_csv(DATASET_DIR / "movie.csv")
-ratings = pd.read_csv(DATASET_DIR / "rating.csv")
+CSV_PATH = DATASET_DIR / "hindi_movies.csv"
 
-merged_data = ratings.merge(
-    movies,
-    on="movieId"
-)
 
-movie_rating_count = (
-    merged_data
-    .groupby("title")["rating"]
-    .count()
-    .reset_index()
-)
+def train_content_based_model():
+    print("Loading Hindi Movies Dataset...")
+    df = pd.read_csv(CSV_PATH)
 
-movie_rating_count.rename(
-    columns={"rating": "num_ratings"},
-    inplace=True
-)
+    # Fill NA values with empty string
+    df["genre"] = df["genre"].fillna("")
+    df["director"] = df["director"].fillna("")
+    df["cast"] = df["cast"].fillna("")
+    df["overview"] = df["overview"].fillna("")
 
-merged_data = merged_data.merge(
-    movie_rating_count,
-    on="title"
-)
+    # Feature Engineering: Combine tags
+    df["tags"] = (
+        df["overview"]
+        + " "
+        + df["genre"]
+        + " "
+        + df["director"]
+        + " "
+        + df["cast"]
+    ).apply(lambda x: x.lower())
 
-popular_movies = merged_data[
-    merged_data["num_ratings"] >= 100
-]
+    print("Vectorizing tags using CountVectorizer...")
+    cv = CountVectorizer(max_features=5000, stop_words="english")
+    vectors = cv.fit_transform(df["tags"]).toarray()
 
-movie_pivot = popular_movies.pivot_table(
-    index="title",
-    columns="userId",
-    values="rating"
-)
+    print("Computing Cosine Similarity Matrix...")
+    similarity = cosine_similarity(vectors)
 
-movie_pivot.fillna(0, inplace=True)
+    print("Saving models to models/ directory...")
+    with open(MODEL_DIR / "hindi_movies.pkl", "wb") as f:
+        pickle.dump(df, f)
 
-movie_sparse_matrix = csr_matrix(movie_pivot)
+    with open(MODEL_DIR / "similarity.pkl", "wb") as f:
+        pickle.dump(similarity, f)
 
-model = NearestNeighbors(
-    metric="cosine",
-    algorithm="brute"
-)
+    print("SUCCESS: Hindi Content-Based Model Saved Successfully!")
 
-model.fit(movie_sparse_matrix)
 
-with open(MODEL_DIR / "model.pkl", "wb") as f:
-    pickle.dump(model, f)
-
-with open(MODEL_DIR / "movie_pivot.pkl", "wb") as f:
-    pickle.dump(movie_pivot, f)
-
-print("✅ Model Saved Successfully!")
+if __name__ == "__main__":
+    train_content_based_model()

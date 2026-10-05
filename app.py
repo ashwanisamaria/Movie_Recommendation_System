@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 
-from src.model import recommend_movies, movie_pivot
+from src.model import recommend_movies, movies_df
 from src.tmdb import get_movie_details
 
 # ==========================================
@@ -9,7 +9,7 @@ from src.tmdb import get_movie_details
 # ==========================================
 
 st.set_page_config(
-    page_title="AI Movie Recommendation System",
+    page_title="Bollywood Movie Recommendation System",
     page_icon="🎬",
     layout="wide",
 )
@@ -57,8 +57,8 @@ with st.sidebar:
 ### 📌 Tech Stack
 
 - Python
-- Pandas
-- Scikit-learn
+- Pandas & NumPy
+- Scikit-learn (Cosine Similarity)
 - Streamlit
 - TMDB API
 """
@@ -66,7 +66,7 @@ with st.sidebar:
 
     st.markdown("---")
 
-    st.success("✅ AI Powered")
+    st.success("✅ Content-Based AI Engine")
 
 # ==========================================
 # Header
@@ -75,11 +75,11 @@ with st.sidebar:
 st.markdown(
     """
 <div class="main-title">
-🎬 <span>AI Movie Recommendation</span> System
+🎬 <span>Bollywood Movie Recommendation</span> System
 </div>
 
 <div class="subtitle">
-Discover movies you'll love using Machine Learning ❤️
+Discover Hindi movies you'll love using Content-Based Machine Learning ❤️
 </div>
 """,
     unsafe_allow_html=True,
@@ -88,14 +88,14 @@ Discover movies you'll love using Machine Learning ❤️
 st.divider()
 
 st.info(
-    "🎯 Get personalized movie recommendations using collaborative filtering and Machine Learning."
+    "🎯 Get personalized movie recommendations based on Genre, Cast, Director, and Plot similarity."
 )
 
 # ==========================================
 # Movie Selection
 # ==========================================
 
-movie_list = sorted(movie_pivot.index.tolist())
+movie_list = sorted(movies_df["title"].tolist())
 
 selected_movie = st.selectbox(
     "Choose a Movie",
@@ -122,21 +122,22 @@ if st.button("🎬 Recommend Movies"):
             if selected_details.get("rating"):
                 st.write(f"⭐ **Rating:** {selected_details['rating']}/10")
             if selected_details.get("release_date"):
-                st.write(f"📅 **Release Year:** {selected_details['release_date'][:4]}")
+                st.write(f"📅 **Release Year:** {str(selected_details['release_date'])[:4]}")
+            if selected_details.get("genre"):
+                st.write(f"🎭 **Genre:** {selected_details['genre']}")
+            if selected_details.get("director"):
+                st.write(f"🎬 **Director:** {selected_details['director']}")
+            if selected_details.get("cast"):
+                st.write(f"👥 **Cast:** {selected_details['cast']}")
             if selected_details.get("overview"):
                 st.write(f"📝 **Overview:** {selected_details['overview']}")
-            st.link_button(
-                "🎬 View on TMDB",
-                f"https://www.themoviedb.org/movie/{selected_details['tmdb_id']}",
-            )
     else:
         st.write(f"**Selected:** {selected_movie}")
 
     st.divider()
 
     # 2. Ab Recommended Movies fetch aur show karo
-    recommendations = recommend_movies(selected_movie)
-    recommendations = recommendations[:number_of_recommendations]
+    recommendations = recommend_movies(selected_movie, n_recommendations=number_of_recommendations)
 
     st.markdown(
         f"<div class='section-title'>🎥 Recommended Movies (Because you selected '{selected_movie}')</div>",
@@ -157,16 +158,13 @@ if st.button("🎬 Recommend Movies"):
                     if details.get("rating"):
                         st.write(f"⭐ **Rating:** {details['rating']}/10")
                     if details.get("release_date"):
-                        st.write(f"📅 **Year:** {details['release_date'][:4]}")
+                        st.write(f"📅 **Year:** {str(details['release_date'])[:4]}")
+                    if details.get("genre"):
+                        st.caption(f"🎭 {details['genre']}")
                     if details.get("overview"):
                         overview = details["overview"]
                         if len(overview) > 120:
                             overview = overview[:120] + "..."
                         st.caption(overview)
-                    st.link_button(
-                        "🎬 View on TMDB",
-                        f"https://www.themoviedb.org/movie/{details['tmdb_id']}",
-                        use_container_width=True,
-                    )
                 else:
                     st.error("Movie details not found.")

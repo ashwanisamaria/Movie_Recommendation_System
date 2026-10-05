@@ -1,11 +1,11 @@
-# 🎬 AI Movie Recommendation System
+# 🎬 Bollywood Movie Recommendation System
 
 <p align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-red?style=for-the-badge&logo=streamlit)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-KNN-orange?style=for-the-badge&logo=scikitlearn)
-![Pandas](https://img.shields.io/badge/Pandas-Data_Analysis-black?style=for-the-badge&logo=pandas)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Cosine_Similarity-orange?style=for-the-badge&logo=scikitlearn)
+![Pandas](https://img.shields.io/badge/Pandas-Data_Processing-black?style=for-the-badge&logo=pandas)
 ![TMDB](https://img.shields.io/badge/TMDB-API-green?style=for-the-badge)
 
 </p>
@@ -14,52 +14,48 @@
 
 ## 📖 Overview
 
-An AI-powered Movie Recommendation System built using **Collaborative Filtering** and **K-Nearest Neighbors (KNN)**. The application recommends movies similar to a user's selected movie based on user rating patterns.
+An AI-powered **Bollywood Movie Recommendation System** built using **Content-Based Filtering**, **Natural Language Processing (NLP)**, and **Cosine Similarity**. The application recommends Hindi movies based on similarity in **Genre, Cast, Director, and Plot Summary**.
 
-To enhance the user experience, the system integrates the **TMDB API** to fetch movie posters, ratings, release dates, and descriptions in real time.
+The system features real-time movie posters, ratings, release years, cast/director information, and comprehensive plot overviews with built-in resilience and fallback support.
 
 ---
 
 ## ✨ Features
 
-- 🎬 Movie Recommendation using Machine Learning
-- 🤖 K-Nearest Neighbors (KNN) Algorithm
-- ⭐ Real-time Movie Ratings
-- 🖼 Movie Posters
-- 📅 Release Year
-- 📝 Movie Overview
-- 🌐 TMDB API Integration
-- 🎨 Modern Streamlit UI
-- ⚡ Fast Recommendations
-- 📱 Responsive Interface
+- 🎬 Hindi / Bollywood Movie Recommendations using Machine Learning
+- 🧠 NLP Feature Extraction via `CountVectorizer`
+- 📐 Cosine Similarity Metric for high-accuracy recommendations
+- 🎯 Prominent **Selected Movie Card** showing full details before recommendations
+- ⭐ Real-time Movie Ratings & Release Years
+- 🖼 High-Quality Movie Posters (TMDB + Curated Dataset fallback)
+- 📝 Movie Plot Overviews, Director & Cast Details
+- 🎨 Modern Streamlit Dark-Themed UI
+- ⚡ Ultra-fast In-Memory Inferences
 
 ---
 
 ## 🧠 Machine Learning Workflow
 
 ```
-Movie Dataset
-        │
-        ▼
-Ratings Dataset
-        │
-        ▼
-Merge Datasets
-        │
-        ▼
-Popularity Filtering
-        │
-        ▼
-Pivot Table
-        │
-        ▼
-Sparse Matrix
-        │
-        ▼
-KNN Model Training
-        │
-        ▼
-Movie Recommendation
+Hindi Movies Dataset (hindi_movies.csv)
+                  │
+                  ▼
+Feature Extraction (Overview + Genre + Director + Cast)
+                  │
+                  ▼
+Tags Generation & Text Normalization
+                  │
+                  ▼
+CountVectorizer (Bag of Words / 5000 Features)
+                  │
+                  ▼
+Cosine Similarity Matrix Computation
+                  │
+                  ▼
+Model Serialization (hindi_movies.pkl & similarity.pkl)
+                  │
+                  ▼
+Streamlit Web Application & Interactive UI (app.py)
 ```
 
 ---
@@ -68,13 +64,12 @@ Movie Recommendation
 
 | Technology | Purpose |
 |------------|---------|
-| Python | Programming Language |
-| Streamlit | Web Application |
-| Pandas | Data Processing |
-| Scikit-Learn | Machine Learning |
-| SciPy | Sparse Matrix |
-| TMDB API | Movie Information |
-| Requests | API Calls |
+| Python | Core Programming Language |
+| Streamlit | Web Application & UI |
+| Pandas & NumPy | Data Processing & Matrix Operations |
+| Scikit-Learn | Vectorization (`CountVectorizer`) & `cosine_similarity` |
+| TMDB API | Live Movie Information |
+| Requests | REST API Calls |
 
 ---
 
@@ -84,11 +79,17 @@ Movie Recommendation
 Movie_Recommendation_System/
 │
 ├── assets/
-│   └── style.css
+│   ├── style.css
+│   ├── homepage.png
+│   └── recommendation.png
 │
 ├── dataset/
-│   ├── movie.csv
-│   └── link.csv
+│   ├── hindi_movies.csv
+│   └── create_hindi_dataset.py
+│
+├── models/
+│   ├── hindi_movies.pkl
+│   └── similarity.pkl
 │
 ├── src/
 │   ├── model.py
@@ -97,135 +98,26 @@ Movie_Recommendation_System/
 │
 ├── app.py
 ├── requirements.txt
+├── README.md
 └── .gitignore
 ```
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation & Run
 
-### Clone Repository
-
-```bash
-git clone https://github.com/ashwanisamaria/Movie_Recommendation_System.git
-```
-
-### Open Project
-
-```bash
-cd Movie_Recommendation_System
-```
-
-### Install Dependencies
-
+### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Create Streamlit Secrets
-
-Create the following file:
-
-```
-.streamlit/secrets.toml
-```
-
-Add your TMDB API key:
-
-```toml
-TMDB_API_KEY = "YOUR_API_KEY"
-```
-
----
-
-## ▶️ Run the Application
-
+### 2. Run the Application
 ```bash
 streamlit run app.py
 ```
 
 ---
 
-## 📸 Screenshots
-
-### Home Page
-
-> *(Add screenshot here)*
-
----
-
-### Recommendations
-
-> *(Add screenshot here)*
-
----
-
-### Movie Details
-
-> *(Add screenshot here)*
-
----
-
-## 📊 Dataset
-
-This project uses the **MovieLens Dataset**.
-
-Due to GitHub's file size limit, the large **rating.csv** file is not included in this repository.
-
-Download the dataset from:
-
-https://grouplens.org/datasets/movielens/
-
----
-
-## 🔮 Future Improvements
-
-- Deep Learning Recommendation Model
-- Content-Based Filtering
-- Hybrid Recommendation System
-- User Login System
-- Watchlist Feature
-- Search Suggestions
-- Genre Filtering
-- Trailer Integration
-- User Rating System
-
----
-
 ## 👨‍💻 Author
 
 **Ashwani Samaria**
-
-- GitHub: https://github.com/ashwanisamaria
-
----
-
-## ⭐ Support
-
-If you found this project helpful, consider giving it a ⭐ on GitHub!
-
----
-
-## 📄 License
-
-This project is intended for educational and learning purposes.
-
----
-
-# 📸 Project Preview
-
-## 🏠 Home Page
-
-The homepage allows users to select a movie and generate AI-powered recommendations.
-
-![Home Page](assets/homepage.png)
-
----
-
-## 🎬 Movie Recommendations
-
-The recommendation engine suggests similar movies using K-Nearest Neighbors (KNN) and Collaborative Filtering.
-
-![Movie Recommendations](assets/recommendation.png)
-
----
